@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .header {
+            height: 12vh;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-style: italic;
+            min-width: 1024px;
+            width: 100%;
+            background-color: #234433;
+        }
+        .header h1 {
+            color: #5dfbfbb5;
+            display: inline-block;
+            transform: translate(-0%, -50%);
+            font-size: 3.6vw;
+        }
+
+        .header > span {
+            float: right;
+            position: relative;
+            right: 100px;
+            width: 120px;
+            height: 40px;
+        }
+
+        .header img {
+            height: 12vh;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .center-vertical {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .header span {
+            font-size: 1.3vw;
+            color: #64cdff;
+            font-family: "Century Gothic", serif;
+        }
+
+        .header > ul {
+            position: absolute;
+            right: 20px;
+            top: 40px;
+        }
+
+        .header ul li {
+            list-style-type: none;
+            font-size: 1.3vw;
+        }
+
+        .header ul li a {
+            transition: all 0.3s ease-out;
+            background: #cbcbcb;
+            color: #174867;
+            padding: 7px 15px 7px 15px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            width: 100%;
+            display: block;
+            text-decoration: none;
+            box-shadow: 2px 2px 4px #888;
+            font-size: 1.4vw;
+        }
+
+        .header ul li a:hover {
+            background: #ebebeb;
+        }
+
+        div>span{
+            margin-right:-80px;
+        }
+
+        #user-img {
+            display: inline-block;
+            margin-left: 120px;
+            height: 8vh;
+            width: 8vh;
+            border-radius: 20%;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <img src="logo.png" alt="">
+    <h1>Student Management System</h1>
+    <span id="username" class="center-vertical"></span>
+    <a href="#" onclick="popMenu()">
+        <img class="center-vertical" id="user-img" src="user.jpg" title="Pop menu" alt="user">
+    </a>
+    <ul id="menu" style="display: none">
+        <li>
+            <a href="#" onclick="modifyPassword()">Modify Password</a>
+        </li>
+        <li>
+            <a href="../login.html" onclick="openGoogle()">Relogin</a>
+        </li>
+    </ul>
+</div>
+<div class="left-area">
+    <div class="navbox">
+
+    </div>
+</div>
+</body>
+<script>
+    function popMenu() {
+        menu.style.display = "block";
+        // menu.setAttribute('style', 'display:display');
+    }
+    function openGoogle() {
+        window.open("https://www.google.com")
+    }
+    menu.addEventListener('mouseleave', function(e) {
+        e.target.setAttribute('style', 'display:none');
+    });
+</script>
+</html>

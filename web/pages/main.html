@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .header {
+            height: 12vh;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-style: italic;
+            min-width: 1024px;
+            width: 100%;
+            background-color: #234433;
+        }
+
+        .header h1 {
+            color: #5dfbfbb5;
+            display: inline-block;
+            transform: translate(-0%, -50%);
+            font-size: 3.6vw;
+        }
+
+        .header > span {
+            float: right;
+            position: relative;
+            right: 100px;
+            width: 120px;
+            height: 40px;
+        }
+
+        .header img {
+            height: 12vh;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+
+        .left-area {
+            width: 15%;
+            height: 88vh;
+            float: left;
+            background-color: #dbd7d4e3;
+        }
+
+        .right-area {
+            border-style: ridge;
+            width: 84.5%;
+            height: 87vh;
+            float: right;
+        }
+
+        iframe {
+            height: 100%;
+            width: 100%;
+        }
+
+        .left-area a {
+            text-decoration: none;
+            background-color: #fefba4;
+            font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+            font-size: 1.6vw;
+        }
+
+        .left-area li {
+            list-style-type: none;
+            width: 100%;
+        }
+
+        .navbox {
+            position: relative;
+            float: left;
+        }
+
+        ul.nav {
+            list-style: none;
+            display: block;
+            width: 65%;
+            margin-left: -30px;
+        }
+
+        .left-area li {
+            margin: 5px 0 0 0;
+        }
+
+        ul.nav li a {
+            transition: all 0.3s ease-out;
+            background: #cbcbcb;
+            color: #174867;
+            padding: 7px 15px 7px 15px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            width: 100%;
+            display: block;
+            text-decoration: none;
+            box-shadow: 2px 2px 4px #888;
+            font-size: 1.4vw;
+        }
+
+        ul.nav li a:hover {
+            background: #ebebeb;
+            color: #2382cd;
+            font-weight: bold;
+            padding: 7px 15px 7px 30px;
+        }
+
+        #user-img {
+            display: inline-block;
+            margin-left: 120px;
+            height: 8vh;
+            width: 8vh;
+            border-radius: 20%;
+        }
+
+        .center-vertical {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .header span {
+            font-size: 1.3vw;
+            color: #64cdff;
+            font-family: "Century Gothic", serif;
+        }
+
+        .header > ul {
+            position: absolute;
+            right: 20px;
+            top: 40px;
+        }
+
+        .header ul li {
+            list-style-type: none;
+            font-size: 1.3vw;
+        }
+
+        .header ul li a {
+            transition: all 0.3s ease-out;
+            background: #cbcbcb;
+            color: #174867;
+            padding: 7px 15px 7px 15px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            width: 100%;
+            display: block;
+            text-decoration: none;
+            box-shadow: 2px 2px 4px #888;
+            font-size: 1.4vw;
+        }
+
+        .header ul li a:hover {
+            background: #ebebeb;
+        }
+
+        div>span{
+            margin-right:-80px;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <img src="../images/logo.png" alt="">
+    <h1>Student Management System</h1>
+    <span id="username" class="center-vertical"></span>
+    <a href="#" onclick="popMenu()">
+        <img class="center-vertical" id="user-img" src="../images/user.jpg" title="Pop menu" alt="user">
+    </a>
+    <ul id="menu" style="display: none">
+        <li>
+            <a href="#" onclick="modifyPassword()">Modify Password</a>
+        </li>
+        <li>
+            <a href="../login.html">Relogin</a>
+        </li>
+    </ul>
+
+</div>
+<div class="left-area">
+    <div class="navbox">
+        <ul class="nav" id="outline">
+            <li>
+                <a href="#" onclick="manageAccounts();">Account management</a>
+                <a href="#" onclick="manageStudents();">Student Management</a>
+            </li>
+            <li>
+                <a href="#">Other...</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="right-area">
+    <iframe id="frame" src="welcome.html" frameborder="0"></iframe>
+</div>
+</body>
+<script src="../js/common.js"></script>
+<script>
+    let ini = function () {
+        let currentAccount = sessionStorage.getItem("currentAccount");
+        if (currentAccount) {
+            username.innerHTML = JSON.parse(currentAccount).userName;
+        } else {
+            window.location.href = '../login.html';
+        }
+    }();
+
+    function popMenu() {
+        menu.setAttribute('style', 'display:display');
+    }
+
+    function modifyPassword() {
+        popWindow("modify_password.html", "modify password");
+    }
+
+    menu.addEventListener('mouseleave', function (e) {
+        e.target.setAttribute('style', 'display:none');
+    });
+
+    function manageAccounts() {
+        frame.setAttribute('src', 'account_management.html');
+    }
+
+    function manageStudents() {
+        frame.setAttribute('src', 'student_management.html');
+    }
+
+</script>
+</html>

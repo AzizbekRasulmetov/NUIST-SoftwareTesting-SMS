@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .main{
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <form method="post" id="addStudentForm">
+        <fieldset>
+            <legend style="margin: 0 auto">Add Student</legend>
+            <div>
+                <span class="lbl lbl-single">
+                    <label for="studentName">Student Name(*):</label>
+                </span>
+                <span class="ipt ipt-single">
+                    <input name="studentName"
+                           placeholder="(5-10) digits or characters" id="studentName" type="text" required onblur="checkStudentName(this.value);">
+                </span>
+                <span>
+                    <label class="warning" id="warningStudentName"></label>
+                </span>
+            </div>
+
+            <div>
+                <span class="lbl lbl-single">
+                    <label for="major">Major(*):</label>
+                </span>
+                <span class="ipt ipt-single">
+                    <input name="major"
+                           placeholder="2+ digits or characters"
+                           onblur="checkStudentMajor(this.value)"
+                           id="major" type="text" required>
+                </span>
+                <span>
+                    <label class="warning" id="warningMajor"></label>
+                </span>
+            </div>
+
+            <div>
+                <span class="lbl lbl-single">
+                    <label for="studentID">Student ID(*):</label>
+                </span>
+                <span class="ipt ipt-single">
+                    <input name="studentID"
+                           placeholder="student ID"
+                           onblur="checkStudentID(this.value)"
+                           id="studentID" type="text" required>
+                </span>
+                <span>
+                    <label class="warning" id="warningStudentId"></label>
+                </span>
+            </div>
+
+            <div style="text-align:center;margin-top: 20px">
+                <input class="btn btn-big" type="submit" onsubmit="return false;">
+                <input class="btn btn-big" type="reset">
+                <button class="btn btn-big" onclick="location.href='../login.html'">login</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script src="../js/request.js"></script>
+<script src="../js/common.js"></script>
+<script>
+    let ini = function () {
+        let form = document.querySelector("#addStudentForm");
+        form.addEventListener("submit", e => {
+            let formData = new FormData(form);
+            event.preventDefault();
+            if (!(checkStudentName(studentName.value)
+                && checkStudentMajor(major.value)
+                && checkStudentID(studentID.value))){
+                return true;
+            }
+            formData.append("action", "addStudent");
+            sendPost("/SMS/student", formData2Url(formData), handle);
+        });
+    }();
+
+
+    function handle(message) {
+        if (message.state === SUCCESS) {
+            alert(message.detail);
+        } else if (message.state === FAILED) {
+            warningStudentName.innerHTML = message.detail;
+        }
+    }
+
+    function checkStudentName(name) {
+        let result = true;
+        if (name.length < 2){
+            warningStudentName.innerHTML = "invalid name";
+            warningStudentName.focus();
+            result = false;
+        }else{
+            warningStudentName.innerHTML = "";
+        }
+        return result;
+    }
+
+    function checkStudentMajor(major) {
+        let result = true;
+        if (major.length < 2){
+            warningMajor.innerHTML = "invalid major name";
+            warningMajor.focus();
+            result = false;
+        }else{
+            warningMajor.innerHTML = "";
+        }
+        return result;
+    }
+
+
+    function checkStudentID(id) {
+        if (id.length < 1){
+            warningStudentId.innerHTML = "invalid student id";
+            warningStudentId.focus();
+            return false;
+        }else{
+            warningStudentId.innerHTML = "";
+            return true;
+        }
+    }
+</script>
+</body>
+</html>

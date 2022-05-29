@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+<div class="main">
+    <form method="post" id="registerForm">
+        <fieldset>
+            <legend style="margin: 0 auto">Register</legend>
+            <div>
+                <span class="lbl lbl-single">
+                    <label for="username">User Name(*):</label>
+                </span>
+                <span class="ipt ipt-single">
+                    <input name="username"
+                           placeholder="(5-10) digits or characters" id="username" type="text" required onblur="checkUserName(this.value);">
+                </span>
+                <span>
+                    <label class="warning" id="warningUserName"></label>
+                </span>
+            </div>
+
+            <div>
+                <span class="lbl lbl-single">
+                    <label for="password">Password(*):</label>
+                </span>
+                <span class="ipt ipt-single">
+                    <input name="password"
+                           placeholder="6 digits or characters"
+                           onblur="checkPassword(this.value)"
+                           id="password" type="password" required>
+                </span>
+                <span>
+                    <label class="warning" id="warningPassword"></label>
+                </span>
+            </div>
+
+            <div>
+                <span class="lbl lbl-single">
+                    <label for="passwordConfirm">Pass Confirm(*):</label>
+                </span>
+                <span class="ipt ipt-single">
+                    <input name="passwordConfirm"
+                           placeholder="must same as password"
+                           onblur="checkPasswordConfirm(this.value)"
+                           id="passwordConfirm" type="password" required>
+                </span>
+                <span>
+                    <label class="warning" id="warningPasswordConfirm"></label>
+                </span>
+            </div>
+
+            <div style="text-align:center;margin-top: 20px">
+                <input class="btn" type="submit" onsubmit="return false;">
+                <input class="btn" type="reset">
+                <button class="btn" onclick="location.href='../login.html'">login</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script src="../js/request.js"></script>
+<script src="../js/common.js"></script>
+<script>
+    let ini = function () {
+        let form = document.querySelector("#registerForm");
+        form.addEventListener("submit", e => {
+
+            let formData = new FormData(form);
+            event.preventDefault();
+            if (!(checkPassword(password.value)
+                && checkUserName(username.value)
+                && checkPasswordConfirm(passwordConfirm.value))){
+                return true;
+            }
+            formData.append("action", REGISTER);
+            sendPost("/SMS/user", formData2Url(formData), handle);
+        });
+    }();
+
+
+    function handle(message) {
+        if (message.state === SUCCESS) {
+            let result = confirm(message.detail+", do your want to jump to login page?");
+            if (result === true){
+                window.location.href = "../login.html";
+            }
+        } else if (message.state === FAILED) {
+           warningUserName.innerHTML = message.detail;
+        }
+    }
+
+    function checkUserName(username) {
+        let reg = /^[a-zA-Z0-9]{5,10}$/i;
+        let result = true;
+        if (!reg.test(username)){
+            warningUserName.innerHTML = "invalid user name";
+            warningUserName.focus();
+            result = false;
+        }else{
+            warningUserName.innerHTML = "";
+        }
+        return result;
+    }
+
+    function checkPassword(password) {
+        let reg = /^[a-zA-Z0-9]{6}$/i;
+        let result = true;
+
+        if (!reg.test(password)){
+            warningPassword.innerHTML = "invalid password";
+            warningPassword.focus();
+            result = false;
+        }else{
+            warningPassword.innerHTML = "";
+        }
+        return result;
+    }
+
+    function checkPasswordConfirm(passwordConfirm) {
+        if (passwordConfirm !== password.value){
+            warningPasswordConfirm.innerHTML = "password not same";
+            warningPasswordConfirm.focus();
+            return false;
+        }else{
+            warningPasswordConfirm.innerHTML = "";
+            return true;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+Basic requirements£º
+	1. Add more functions to the existing project with at least one module which is used to manage something.
+	2. Write a testing report contains test cases to your project.
+Recommend Tools£º
+	Database£ºMySQL 
+	IDE£ºIDEA
+	Application Server£ºTomcat
+Steps£º
+	1. Prepare environment
+		1) Install JDK and configure it
+		2) Install Tomcat and configure it
+		3) Install IDEA, set the tomcat server.
+		4) Install MySQL. Sql script is in the folder "sql", import it to your database. 
+	2. Implementation
+		1) Open the project with IDEA, then try to deploy and run it.
+		2) Add more functions, test it.
+	3. Write the report
+Deadline:
+	Every one should deliver your code and report to the monitor before the last day of 16th week.
+Good luck!
+		
+

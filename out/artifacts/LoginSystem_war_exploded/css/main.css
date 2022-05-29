@@ -1,0 +1,101 @@
+html{
+    background-image: url('../images/mainbg.jpg');
+    background-size: 100% 100vh;
+}
+
+.title{
+    font-size: xx-large;
+    font-family: "Century Gothic", serif ;
+    color: #830447;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.main{
+    width:1000px;
+    margin: 80px auto;
+    background-color: #746c7488;
+    height: 400px;
+    font-family:"Century Gothic", serif;
+    font-size: 1.5em;
+    border-radius: 20px;
+    z-index: 999;
+}
+
+fieldset,form{
+    height: 93%;
+    margin: 10px;
+}
+
+legend{
+    font-size: larger;
+}
+
+.lbl{
+    display: inline-block;
+    width: 200px;
+}
+
+.lbl-single{
+    margin-top: 40px;
+    margin-left:15%;
+}
+
+.lbl-multiple{
+    margin-top: 10px;
+    margin-left:5%;
+}
+
+.ipt>input{
+    height: 40px;
+    border: 1px solid #ccc;
+    padding: 2px;
+    font-size: 1em;
+    color: #444;
+}
+
+.ipt-single{
+    margin-left: 20px;
+    width: 30%;
+}
+
+.ipt-multiple{
+    margin-left: 10px;
+    width: 120px;
+}
+
+.warning{
+    color:red;
+    font-size: smaller;
+}
+
+.btn{
+    transition: all 0.3s ease-out;
+    font-family: "Century Gothic", serif;
+    font-size: 20px;
+    color: #d33423;
+    height: 40px;
+    border-radius: 20px;
+    box-shadow: 4px 4px 8px #888;
+    margin-left:30px;
+}
+
+.btn:hover {
+    color: #000000;
+    background-color: #f1fff5;
+    border-style: ridge;
+    box-shadow: 14px 14px 18px #888;
+    opacity: 90%;
+}
+
+.btn-big{
+    width:200px;
+}
+
+
+
+
+
+
+
+

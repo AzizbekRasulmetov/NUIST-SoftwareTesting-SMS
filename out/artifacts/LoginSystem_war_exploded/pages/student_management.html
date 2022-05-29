@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        main, html {
+            height: 88vh;
+            font-family: "Century Gothic", serif;
+            font-size: 1.4vw;
+        }
+
+        form {
+            background-color: rgba(249, 205, 224, 0.39);
+            padding: 20px;
+        }
+
+        .info {
+            width: 10%;
+            margin-left: 60px;
+        }
+
+        .field > input {
+            margin-right: 60px;
+            font-family: "Century Gothic", serif;
+            font-size: 1.4vw;
+        }
+
+        table {
+            width: 98%;
+            margin: 10px auto;
+        }
+
+        th {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.5vw;
+            font-family: "Fira Code", serif;
+            background-color: rgba(249, 205, 224, 0.69);
+            color: #234433;
+            height: 60px;
+        }
+
+        tr {
+            height: 40px;
+            text-align: center;
+            background-color: #f1fff5;
+        }
+
+        .btn {
+            border-radius: 20px;
+            box-shadow: 2px 2px 4px #888;
+            font-family: "Century Gothic", serif;
+            font-size: 1.2vw;
+            color: white;
+            padding: 5px;
+            margin-left: 20px;
+        }
+
+        .add {
+            background-color: #f394b2;
+        }
+
+        .delete {
+            background-color: rgba(154, 137, 128, 0.61);
+        }
+
+        .update {
+            background-color: rgba(83, 137, 167, 0.53);
+        }
+
+        .bottom {
+            display: inline-block;
+        }
+
+        .bottom-div {
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+<form method="post" id="queryForm">
+    <fieldset>
+        <legend>Query Area</legend>
+        <div>
+            <span class="info-share">
+                <label for="studentName">Student Name:</label>
+            </span>
+            <span class="field-share">
+                <input name="studentName"
+                       id="studentName" type="text">
+            </span>
+            <span class="info">
+                <label for="studentID">ID:</label>
+            </span>
+            <span class="field">
+                <input name="studentID" id="studentID" type="text">
+            </span>
+            <input class="btn btn-big" type="button" onclick="search();" value="Search"/>
+        </div>
+    </fieldset>
+</form>
+<div>
+    <div>
+        <button class="btn add btn-big" onclick="addStudent()">Add Student</button>
+        <button class="btn delete btn-big" onclick="batchDelete()">
+            Batch Delete
+        </button>
+    </div>
+    <table id="accounts"></table>
+    <div class="bottom-div">
+        <div class="bottom">
+            <button class="btn add" onclick="first()">
+                |<
+            </button>
+            <button class="btn delete" onclick="previous()">
+                <<
+            </button>
+            <button class="btn delete" onclick="next()">
+                >>
+            </button>
+            <button class="btn add" onclick="last()">
+                >|
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../js/request.js"></script>
+<script src="../js/common.js"></script>
+<script>
+    let students;
+    let number = 0;
+
+    let ini = function () {
+        iniTable();
+        search();
+    }();
+
+    function iniTable() {
+        let table = document.querySelector('#accounts');
+        table.innerHTML = "<tr>\n" +
+            "            <th style='width: 50px;'>" +
+            "            <input onclick='selectAll();' " +
+            "              class='check-box' type='checkbox'></th>\n" +
+            "            <th>ID</th>\n" +
+            "            <th>Student Name</th>\n" +
+            "            <th>Major</th>\n" +
+            "            <th style='width: 400px;'>Operation</th>\n" +
+            "            </tr>";
+
+        return table.children[0];
+    }
+
+    function search() {
+        let form = document.querySelector("#queryForm");
+        let formData = new FormData(form);
+        formData.append("action", QUERY);
+        sendPost("/SMS/student", formData2Url(formData), handleQuery);
+    }
+
+    function addStudents(){
+        let body = iniTable();
+        for (let i = number * 5; i < number * 5 + 5; i++) {
+            let student = students[i];
+            if (!student) break;
+            body.innerHTML += `<tr>
+                    <td><input type="checkbox" value="${student.id}"></td>
+                    <td>${student.id}</td>
+                    <td>${student.studentName}</td>
+                    <td>${student.major}</td>
+                    <td>
+                    <button class='btn delete' onclick='deleteStudent(${student.id})'>delete</button>
+                    <button class='btn update' onclick='updateStudent(${JSON.stringify(student)})'>update</button></td></tr>`;
+
+        }
+    }
+
+    function addStudent() {
+        popWindow("add_student.html", "add student");
+    }
+
+    function handleQuery(message) {
+        if (message.state === SUCCESS) {
+            students = message.data;
+            let body = iniTable();
+            addStudents(students, 0);
+        }
+    }
+
+    function deleteStudent(id) {
+        let form = document.querySelector("#queryForm");
+        let formData = new FormData(form);
+        formData.append("action", DELETE);
+        formData.append("ids", id);
+        sendPost("/SMS/student", formData2Url(formData), handleDelete);
+    }
+
+    function batchDelete() {
+        let ids = '';
+        let checks = document.querySelectorAll("input[type=checkbox]");
+        for (let i = 1; i < checks.length; i++) {
+            if (checks[i].checked) {
+                ids += checks[i].value + ",";
+            }
+        }
+        ids = ids.substring(0, ids.length - 1);
+        let formData = new FormData();
+        formData.append("action", DELETE);
+        formData.append("ids", ids);
+        sendPost("/SMS/student", formData2Url(formData), handleDelete);
+    }
+
+    function updateStudent(student) {
+        sessionStorage.setItem("student2Delete", JSON.stringify(student));
+        popWindow("update_student.html", "update student");
+    }
+
+    function handleDelete() {
+        search();
+    }
+
+    function selectAll() {
+        let checks = document.querySelectorAll("input[type=checkbox]");
+        for (let i = 1; i < checks.length; i++) {
+            checks[i].checked = !checks[i].checked
+        }
+    }
+
+    function first() {
+        number = 0;
+        addStudents();
+    }
+
+    function last() {
+        if (students.length % 5 === 0){
+            number = Math.floor(students.length / 5) - 1;
+        }else{
+            number = Math.floor(students.length / 5);
+        }
+        addStudents();
+    }
+
+    function next() {
+        if ((number + 1) * 5 >= students.length){
+            return;
+        }
+        number++;
+        addStudents();
+    }
+
+    function previous() {
+        if (number === 0){
+            return;
+        }
+        number--;
+        addStudents();
+    }
+
+</script>
+</html>

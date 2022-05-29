@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div class="title">
+    <h1>Student management System</h1>
+</div>
+<div class="main">
+    <form action="login" method="post" id="loginForm">
+        <fieldset>
+            <legend style="margin: 0 auto">Login</legend>
+            <div>
+            <span class="lbl lbl-single">
+                <label for="username">User Name:</label>
+            </span>
+                <span class="ipt ipt-single">
+                <input name="username" id="username" type="text">
+            </span>
+                <span>
+                    <label class="warning" id="warningUserName"></label>
+                </span>
+            </div>
+            <div>
+            <span class="lbl lbl-single">
+                <label for="password">Password:</label>
+            </span>
+                <span class="ipt ipt-single">
+                <input name="password" id="password" type="password">
+                </span>
+                <span>
+                    <label class="warning" id="warningPassword"></label>
+                </span>
+            </div>
+            <div style="text-align:center;margin-top: 20px">
+                <input type="checkbox" id='isRemember'>Remember Me
+            </div>
+            <div style="text-align:center;margin-top: 20px">
+                <input class="btn" type="submit" onsubmit="return false;">
+                <input class="btn" type="reset" onclick="clearInfo()">
+                <button class="btn" onclick="location.href='pages/register.html'">register</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<script src="js/request.js"></script>
+<script src="js/common.js"></script>
+<script>
+    let ini = function () {
+        let form = document.querySelector("#loginForm");
+        form.addEventListener("submit", e => {
+            let formData = new FormData(form);
+            event.preventDefault();
+            formData.append("action", LOGIN);
+            sendPost("/SMS/user", formData2Url(formData), handle);
+            if (!isRemember.checked) {
+                clearAccount();
+            }else{
+                rememberAccount();
+            }
+        });
+        fillAccount();
+    }();
+
+    function fillAccount() {
+        let remember = localStorage.getItem("remember");
+        if (!remember) {
+            return;
+        }
+        if (remember === 'true') {
+            username.value = localStorage.getItem("username");
+            password.value = localStorage.getItem("password");
+            isRemember.checked = true;
+        } else {
+            clearInfo();
+        }
+    }
+
+    function clearInfo() {
+        warningUserName.innerHTML = "";
+        warningPassword.innerHTML = "";
+    }
+
+    function rememberAccount() {
+        localStorage.setItem("remember", "true");
+        localStorage.setItem("username", username.value);
+        localStorage.setItem("password", password.value);
+    }
+
+    function clearAccount() {
+        localStorage.removeItem("remember");
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
+    }
+
+    function handle(message) {
+        if (message.state === SUCCESS) {
+            console.log(message.data.userName);
+            sessionStorage.setItem('currentAccount',JSON.stringify(message.data));
+            window.location.href = "pages/main.html";
+        } else if (message.state === WRONG) {
+            warningPassword.innerHTML = "*" + message.detail;
+            warningUserName.innerHTML = '';
+        } else {
+            warningPassword.innerHTML = '';
+            warningUserName.innerHTML = "*" + message.detail;
+        }
+    }
+</script>
+</body>
+</html>
