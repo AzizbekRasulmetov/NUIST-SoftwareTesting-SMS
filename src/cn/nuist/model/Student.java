@@ -6,7 +6,6 @@ public class Student implements Serializable {
 
     private String id;
     private String studentName;
-
     private String major;
 
     public Student() {

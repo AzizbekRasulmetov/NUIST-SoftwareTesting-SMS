@@ -78,5 +78,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="library" name="junit" level="project" />
   </component>
 </module>

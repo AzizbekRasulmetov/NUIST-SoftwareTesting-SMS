@@ -11,6 +11,7 @@
           <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/fastjson-1.2.79.jar" />
           <element id="library" level="project" name="Maven: Arquillian JUnit:Release" />
           <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/mysql-connector-java-8.0.25.jar" />
+          <element id="library" level="project" name="KotlinJavaRuntime" />
         </element>
       </element>
     </root>
